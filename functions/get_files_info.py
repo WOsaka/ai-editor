@@ -22,5 +22,5 @@ def get_files_info(working_directory, directory="."):
             result += f" - {file}: file_size:{file_size} bytes, is_dir={is_dir}\n"
     except Exception as e:
         result = f"Error: {str(e)}"
-    
+
     return result
