@@ -3,7 +3,7 @@ import sys
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-
+from config import GEMINI_MODEL, SYSTEM_PROMPT
 
 
 def main():
@@ -13,7 +13,7 @@ def main():
 
     args = sys.argv
     if len(args) < 2:
-        print("Not enough arguments provided")
+        print("Not enough arguments provided\nUsage: uv run main.py <prompt>")
         sys.exit(1)
     user_prompt = args[1]
 
@@ -22,12 +22,13 @@ def main():
         verbose = True
 
     messages = [
-    types.Content(role="user", parts=[types.Part(text=user_prompt)]),
+        types.Content(role="user", parts=[types.Part(text=user_prompt)]),
     ]
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash-001",
+        model=GEMINI_MODEL,
         contents=messages,
+        config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
     )
 
     print(response.text)
