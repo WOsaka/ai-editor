@@ -34,49 +34,5 @@ class TestGetFileInfo(unittest.TestCase):
                 print(f"\nResult for '{test_case['directory']}' directory:\n{result}")
 
 
-# class TestRunPythonFile(unittest.TestCase):
-#     def test_run_python_file(self):
-#         test_cases = [
-#             {
-#                 "name": "1",
-#                 "working_directory": "calculator",
-#                 "file_path": "main.py",
-#                 "args": []
-#             },
-#             {
-#                 "name": "2",
-#                 "working_directory": "calculator",
-#                 "file_path": "main.py",
-#                 "args": ["3 + 5"]
-#             },
-#             {
-#                 "name": "3",
-#                 "working_directory": "calculator",
-#                 "file_path": "tests.py",
-#                 "args": []
-#             },
-#             {
-#                 "name": "4",
-#                 "working_directory": "calculator",
-#                 "file_path": "../main.py",
-#                 "args": []
-#             },
-#             {
-#                 "name": "5",
-#                 "working_directory": "calculator",
-#                 "file_path": "nonexistent.py",
-#                 "args": []
-#             },
-#         ]
-
-#         for test_case in test_cases:
-#             with self.subTest(test_case=test_case["name"]):
-#                 result = run_python_file(
-#                     test_case["working_directory"],
-#                     test_case["file_path"],
-#                     test_case["args"],
-#                 )
-#                 print(f"\n{test_case['name']}:\n{result}")
-
 if __name__ == "__main__":
     unittest.main(verbosity=2, buffer=False)

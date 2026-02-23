@@ -2,33 +2,38 @@ import os
 from subprocess import run
 
 
-def run_python_file(working_directory, file_path, args=[]):
+def run_python_file(working_directory, file_path, args=None):
     try:
-        abspath_wd = os.path.abspath(working_directory)
-        full_path = os.path.join(working_directory, file_path)
-        abspath_fp = os.path.abspath(full_path)
+        working_dir_abs = os.path.abspath(working_directory)
+        target_file = os.path.normpath(os.path.join(working_dir_abs, file_path))
+        valid_target_file = (
+            os.path.commonpath([working_dir_abs, target_file]) == working_dir_abs
+        )
+        if not valid_target_file:
+            return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
 
-        if not abspath_fp.startswith(abspath_wd):
-            return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
+        if not os.path.isfile(target_file):
+            return f'Error: "{file_path}" does not exist or is not a regular file'
 
-        if not os.path.exists(abspath_fp):
-            return f'Error: File "{file_path}" not found.'
-
-        if not abspath_fp.endswith(".py"):
+        if not target_file.endswith(".py"):
             return f'Error: "{file_path}" is not a Python file.'
 
+        command = ["uv", "run", target_file]
+        if args is not None:
+            command.extend(*args)
+
         cp = run(
-            ["uv", "run", abspath_fp, *args],
+            command,
             timeout=30,
             capture_output=True,
-            text=True,  
-            cwd=abspath_wd  
+            text=True,
+            cwd=working_dir_abs,
         )
 
-        stdout = cp.stdout if cp.stdout else "No output produced."
-        stderr = cp.stderr if cp.stderr else ""
+        stdout = cp.stdout if cp.stdout is not None else "No output produced."
+        stderr = cp.stderr if cp.stderr is not None else "No output produced."
 
-        result = f"STDOUT:\n{stdout}\n\nSTDERR:\n{stderr}\n"
+        result = f"STDOUT:\n{stdout}\nSTDERR:\n{stderr}\n"
 
         if cp.returncode != 0:
             result += f"\nProcess exited with code {cp.returncode}"
