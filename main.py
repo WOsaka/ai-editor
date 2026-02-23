@@ -23,13 +23,13 @@ def main():
     # if len(args) == 3 and args[2] == "--verbose":
     #     verbose = True
 
-    # messages = [
-    #     types.Content(role="user", parts=[types.Part(text=user_prompt)]),
-    # ]
+    messages = [
+        types.Content(role="user", parts=[types.Part(text=args.user_prompt)]),
+    ]
 
     response = client.models.generate_content(
         model=GEMINI_MODEL,
-        contents=args.user_prompt,
+        contents=messages
         # config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
     )
     if response is None:
