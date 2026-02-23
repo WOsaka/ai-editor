@@ -6,6 +6,7 @@ from google import genai
 from google.genai import types
 from config import GEMINI_MODEL
 from prompts import system_prompt
+from call_function import available_functions
 
 
 def main():
@@ -28,7 +29,9 @@ def main():
     response = client.models.generate_content(
         model=GEMINI_MODEL,
         contents=messages,
-        config=types.GenerateContentConfig(system_instruction=system_prompt),
+        config=types.GenerateContentConfig(
+            system_instruction=system_prompt, tools=[available_functions]
+        ),
     )
     if response is None:
         raise RuntimeError("API call failed, no response received")
@@ -40,7 +43,12 @@ def main():
         response_tokens = response.usage_metadata.candidates_token_count
         print(f"Response tokens: {response_tokens}")
 
-    print(f"Response:\n{response.text}")
+    fcs = response.function_calls
+    if fcs is not None:
+        for fc in fcs:
+            print(f"Calling function: {fc.name}({fc.args})")
+    else:
+        print(f"Response:\n{response.text}")
 
 
 if __name__ == "__main__":
