@@ -1,8 +1,6 @@
-import os
 import unittest
 from functions.write_file import write_file
 from functions.get_files_info import get_files_info
-from functions.get_files_content import get_file_content
 from functions.run_python_file import run_python_file
 
 
@@ -34,40 +32,6 @@ class TestGetFileInfo(unittest.TestCase):
                     test_case["directory"],
                 )
                 print(f"\nResult for '{test_case['directory']}' directory:\n{result}")
-
-
-# class TestGetFileContent(unittest.TestCase):
-#     def test_get_file_content(self):
-#         test_cases = [
-#             {
-#                 "name": "1",
-#                 "working_directory": "calculator",
-#                 "file_path": "main.py",
-#             },
-#             {
-#                 "name": "2",
-#                 "working_directory": "calculator",
-#                 "file_path": "pkg/calculator.py",
-#             },
-#             {
-#                 "name": "3",
-#                 "working_directory": "calculator",
-#                 "file_path": "/bin/cat",
-#             },
-#             {
-#                 "name": "4",
-#                 "working_directory": "calculator",
-#                 "file_path": "pkg/does_not_exist.py",
-#             },
-#         ]
-
-#         for test_case in test_cases:
-#             with self.subTest(test_case=test_case["name"]):
-#                 result = get_file_content(
-#                     test_case["working_directory"],
-#                     test_case["file_path"],
-#                 )
-#                 print(f"\n{test_case['name']}:\n{result}")
 
 
 # class TestWriteFile(unittest.TestCase):
