@@ -4,7 +4,8 @@ import argparse
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from config import GEMINI_MODEL, SYSTEM_PROMPT
+from config import GEMINI_MODEL
+from prompts import system_prompt
 
 
 def main():
@@ -27,7 +28,7 @@ def main():
     response = client.models.generate_content(
         model=GEMINI_MODEL,
         contents=messages,
-        # config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
+        config=types.GenerateContentConfig(system_instruction=system_prompt),
     )
     if response is None:
         raise RuntimeError("API call failed, no response received")
